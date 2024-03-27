@@ -9,6 +9,6 @@ CHIP Encoder {
     OUT out;
 
     PARTS:
-    Not(in=in[1],out=buffer);
-    Or(a=in[0],b=buffer,c=out);
+    Not(in=in[0],out=buffer);
+    Or(a=in[1],b=buffer,out =out);
 }

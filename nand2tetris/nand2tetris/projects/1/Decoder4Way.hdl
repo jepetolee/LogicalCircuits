@@ -12,5 +12,11 @@ CHIP Decoder4Way {
     OUT out[4];
 
     PARTS:
-    // Put your code here:
+    Not(in=in[0],out=NotIn1);
+    Not(in=in[1],out=NotIn2);
+
+    And(a=NotIn1,b=NotIn2,out=out[0]);
+    And(a=in[0],b=NotIn2,out=out[1]);
+    And(a=NotIn1,b=in[1],out=out[2]);
+    And(a=in[0],b=in[1],out=out[3]);
 }
