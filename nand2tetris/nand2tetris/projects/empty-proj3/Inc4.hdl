@@ -1,0 +1,14 @@
+/*
+ * 4-bit incrementer:
+ * out = in + 1
+ */
+CHIP Inc4 {
+    IN in[4];
+    OUT out[4];
+
+    PARTS:
+     HalfAdder(a=in[0], b=true, carry=carry0, sum=out[0]);
+    FullAdder(a=in[1], b=false, c=carry0, carry=carry1, sum=out[1]);
+    FullAdder(a=in[2], b=false, c=carry1, carry=carry2, sum=out[2]);
+    FullAdder(a=in[3], b=false, c=carry2, carry=carry3, sum=out[3]);
+}

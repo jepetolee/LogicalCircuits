@@ -1,0 +1,18 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/2/Add16.hdl
+/**
+ * 16-bit adder: Adds two 16-bit two's complement values.
+ * The most significant carry bit is ignored.
+ */
+CHIP IsZero16 {
+    IN a[16];
+    OUT out[16];
+
+    PARTS:
+    Or8way(in =in[0..7],out=x);
+    Or8way(in =in[8..15],out=y);
+    Or(a=x,b=y,out=z);
+    Not(in=z,out=out);
+}

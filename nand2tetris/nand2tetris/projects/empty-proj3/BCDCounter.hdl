@@ -1,0 +1,31 @@
+/*
+ * if reset(t)
+ *      out(t+1) = 0
+ *  else if load(t)
+ *      out(t+1) = in(t)
+ *  else if inc(t)
+ *      out(t+1) = in(t) + 1 // in BCD way!!!
+ *  else
+ *      out(t+1) = out(t)
+ */
+CHIP BCDCounter {
+    IN reset, load, inc, in[8];
+    OUT out[8];
+
+    PARTS:
+    Counter4(in=in[0..3], reset=reset, load=load, inc=inc, out=lowerOut,out[0]=temp1,out[1]=temp2,
+                                                                         out[2]=temp3,out[3]=temp4);
+
+    And(a= temp2, b=temp4, out=lt9And1);
+    Nand(a=temp1, b=temp3, out=lt9And2);
+    And(a=lt9And1,b=lt9And2,out=lt9And);
+    And(a=inc, b=lt9And, out=lowerInc);
+    Counter4(in=in[4..7], reset=reset, load=true, inc=lowerInc, out=upperOut);
+
+
+
+    Mux4(a=lowerOut, b=false, sel=lowerInc, out=correctedLowerOut);
+    Mux4(a=correctedLowerOut, b=false, sel=false, out=out[0..3]);
+     Mux4(a=upperOut, b=upperOut, sel=false, out=out[4..7]);
+}
+

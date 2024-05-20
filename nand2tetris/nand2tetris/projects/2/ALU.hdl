@@ -41,5 +41,47 @@ CHIP ALU {
         ng;      // if (out < 0)  equals 1, else 0
 
     PARTS:
-    //// Replace this comment with your code.
+    Mux16(a=x, b=false, sel=zx, out=zxout);
+    Mux16(a=y, b=false, sel=zy, out=zyout);
+
+    // bitwise not
+    Not16(in=zxout, out=notx);
+    Mux16(a=zxout, b=notx, sel=nx, out=nxout);
+
+    Not16(in=zyout, out=noty);
+    Mux16(a=zyout, b=noty, sel=ny, out=nyout);
+
+    // f == 0: compute out = x & y
+    And16(a=nxout, b=nyout, out=andxy);
+    // f == 1: compute out = x + y
+    Add16(a=nxout, b=nyout, out=addxy);
+
+    Mux16(a=andxy, b=addxy, sel=f, out=fout);
+
+    // negate
+    Not16(in=fout, out=nfout);
+    Mux16(a=fout, b=nfout, sel=no, out=out, out[0..7]=outlow, out[8..15]=outhigh, out[15]=ng); // Also, return ng (check whether out is less than zero)
+
+    // Check whether out is zero
+    Or8Way(in=outlow, out=or8waylow);
+    Or8Way(in=outhigh, out=or8wayhigh);
+    Or(a=or8waylow, b=or8wayhigh, out=nzr);
+    Not(in=nzr, out=zr);
+
 }
+
+/*
+ Zero16(a=x,sel=zx,out=x1);
+ Comp16(a=x1,sel=nx,out=x2);
+
+  Zero16(a=y,sel=zy,out=y1);
+ Comp16(a=y1,sel=ny,out=y2);
+
+   Add16(z=x2,b=y2,out=xAddy);
+   And16(z=x2,b=y2,out=xAndy);
+   Mux16(a=xAndy, b=,sel=f,out=out);
+   
+   Comp16(a=out,sel=no,out=ng);
+   IsZero16(a=out out=zr);
+
+*/

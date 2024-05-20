@@ -1,0 +1,30 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/2/Add16.hdl
+/**
+ * 16-bit adder: Adds two 16-bit two's complement values.
+ * The most significant carry bit is ignored.
+ */
+CHIP Add16 {
+    IN a[16], sel;
+    OUT out[16];
+
+    PARTS:
+    Xor(a=[0], b=sel,out=out[0]);
+    Xor(a=[1], b=sel,out=out[1]);
+    Xor(a=[2], b=sel,out=out[2]);
+    Xor(a=[3], b=sel,out=out[3]);
+    Xor(a=[4], b=sel,out=out[4]);
+    Xor(a=[5], b=sel,out=out[5]);
+    Xor(a=[6], b=sel,out=out[6]);
+    Xor(a=[7], b=sel,out=out[7]);
+    Xor(a=[8], b=sel,out=out[8]);
+    Xor(a=[9], b=sel,out=out[9]);
+    Xor(a=[10], b=sel,out=out[10]);
+    Xor(a=[11], b=sel,out=out[11]);
+    Xor(a=[12], b=sel,out=out[12]);
+    Xor(a=[13], b=sel,out=out[13]);
+    Xor(a=[14], b=sel,out=out[14]);
+    Xor(a=[15], b=sel,out=out[15]);
+}

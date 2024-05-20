@@ -1,0 +1,30 @@
+// created by Minho Kim
+// File name: WeirdEncoder.hdl
+/**
+ * weird priority encoder:
+ * priority rule
+   - Even numbers have higher priority than odd numbers.
+   - A larger even number has a higher priority than a smaller even number.
+   - A smaller odd number has a higher priority than a larger odd number.
+   - For all-zero input, out=0 and V=0
+   - For other input, V=1
+ */
+CHIP WeirdEncoder4 {
+    IN in[4];
+    OUT out[2], V;
+
+    PARTS:
+    Or(a=in[3],b=in[1],out=zeroTwo); // 0 번째 또는 2번쨰 원소 존재 확인 존재시 1, 미존재 시 0
+    Or(a=in[2],b=in[0],out=oneThree); // 2 번째 또는 3번째 원소 존재 확인 존재시 1 , 미존재 시 0
+    Or(a=zeroTwo,b=oneThree,out=V); // 00이면 0이되고 나머지 10 01 11은 1이되는 함수
+
+    Not(in=zeroTwo,out=NotzeroTwo);
+    And(a=NotzeroTwo,b=oneThree,out=out[0]); // 진리표에 의거하여 홀수 일때만  1
+
+    // 카르노맵 정리시 a'b'd+ c
+    Not(in=in[2],out=notA);
+    Not(in=in[3],out=notB);
+    And(a=notA,b=notB,out=notAnotB); // 0 또는 1의 존재 시 1 a'b'
+    And(a=notAnotB,b=in[0],out=notAnotBD); // 0 또는 1의 존재 시 1 a'b'
+    Or(a=notAnotBD,b=in[1],out=out[1]);
+}
